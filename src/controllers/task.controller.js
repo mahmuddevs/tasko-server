@@ -8,10 +8,10 @@ const addTask = async (req, res, next) => {
   }
 
   try {
-    const { name, details, status, points, endDate } = req.body
+    const { category, details, status, points, endDate } = req.body
 
     const newTask = new Task({
-      name,
+      category,
       details,
       status,
       points,
@@ -32,11 +32,11 @@ const updateTask = async (req, res, next) => {
   }
   try {
     const { id } = req.params
-    const { name, details, status, points, endDate } = req.body
+    const { category, details, status, points, endDate } = req.body
 
     const updatedTask = await Task.findByIdAndUpdate(
       id,
-      { name, details, status, points, endDate },
+      { category, details, status, points, endDate },
       { new: true, runValidators: true }
     )
 
@@ -91,8 +91,19 @@ const getSingleTask = async (req, res, next) => {
 }
 
 const getAllTasks = async (req, res, next) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
+  }
+
   try {
-    const tasks = await Task.find().sort({ createdAt: -1 })
+    const { category, status } = req.query
+
+    const filters = {}
+    if (category) filters.category = category
+    if (status) filters.status = status
+
+    const tasks = await Task.find(filters).sort({ createdAt: -1 })
     res.send({ success: true, tasks })
   } catch (error) {
     next(error)

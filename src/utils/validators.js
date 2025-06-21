@@ -1,4 +1,4 @@
-import { body, param } from "express-validator"
+import { body, param, query } from "express-validator"
 
 
 export const loginValidation = [
@@ -37,7 +37,7 @@ body("name")
 ]
 
 export const addTaskValidation = [
-  body("name").trim().escape().notEmpty().withMessage("Name is required"),
+  body("category").trim().escape().notEmpty().withMessage("Category is required"),
   body("details").trim().escape().notEmpty().withMessage("Details are required"),
   body("status")
     .trim()
@@ -50,4 +50,19 @@ export const addTaskValidation = [
 
 export const validateParams = [
   param("id").isMongoId().withMessage("Invalid task ID format")
+]
+
+export const validateTaskQuery = [
+  query("category")
+    .optional()
+    .isString()
+    .trim()
+    .withMessage("Category must be a string"),
+
+  query("status")
+    .optional()
+    .isString()
+    .trim()
+    .isIn(["Pending", "Ongoing", "In Progress", "Done", "Collaboration task", "All Task"])
+    .withMessage("Invalid status value"),
 ]

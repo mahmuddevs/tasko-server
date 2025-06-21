@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 const taskSchema = new mongoose.Schema({
-  name: {
+  category: {
     type: String,
     required: true,
     trim: true,
