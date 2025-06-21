@@ -54,13 +54,13 @@ export const validateParams = [
 
 export const validateTaskQuery = [
   query("category")
-    .optional()
+    .optional({ checkFalsy: true }) // skips if empty string or null
     .isString()
     .trim()
     .withMessage("Category must be a string"),
 
   query("status")
-    .optional()
+    .optional({ checkFalsy: true }) // skips if empty string or null
     .isString()
     .trim()
     .isIn(["Pending", "Ongoing", "In Progress", "Done", "Collaboration task", "All Task"])

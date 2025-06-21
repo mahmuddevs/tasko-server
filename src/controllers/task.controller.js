@@ -110,10 +110,37 @@ const getAllTasks = async (req, res, next) => {
   }
 }
 
+const updateStatus = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const { status } = req.body
+
+    if (!status) {
+      return res.status(400).json({ error: "Status is required" })
+    }
+
+    const updatedTask = await Task.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    )
+
+    if (!updatedTask) {
+      return res.status(404).json({ error: "Task not found" })
+    }
+
+    res.send(updatedTask)
+  } catch (err) {
+    next(err)
+  }
+}
+
+
 export {
   addTask,
   updateTask,
   deleteTask,
   getSingleTask,
   getAllTasks,
+  updateStatus
 }

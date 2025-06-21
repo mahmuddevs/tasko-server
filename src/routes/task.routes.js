@@ -1,6 +1,6 @@
 import express from "express"
 import { addTaskValidation, validateParams, validateTaskQuery } from "../utils/validators.js"
-import { addTask, deleteTask, getAllTasks, getSingleTask, updateTask } from "../controllers/task.controller.js"
+import { addTask, deleteTask, getAllTasks, getSingleTask, updateStatus, updateTask } from "../controllers/task.controller.js"
 
 const taskRoutes = express.Router()
 
@@ -14,5 +14,6 @@ taskRoutes.patch("/update/:id",
   ]
   , updateTask)
 taskRoutes.delete("/task/:id", validateParams, deleteTask)
+taskRoutes.patch("/task/:id/status", updateStatus)
 
 export default taskRoutes
